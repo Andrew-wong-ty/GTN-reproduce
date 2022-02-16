@@ -12,7 +12,7 @@ Experiments are carried out on a single NVIDIA-SMI. Hyperparameter settings:
 - weight decay: 0.001
 - Seed: 16
 ## Reproduce Results
-Table : Evaluation results on the node classification task (F1 score)
+Table : Evaluation results on the node classification task of different datasets (F1 score)
 |            | result in paper    |  reproduce result  |
 | :-:   | :-:   | :-: |
 | DBLP        | 94.18      |   94.02    |
