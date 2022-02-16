@@ -75,11 +75,11 @@ class GTN(nn.Module):
         return H
 
     def forward(self, A, X, target_x, target):
-        A = A.unsqueeze(0).permute(0,3,1,2) 
+        A = A.unsqueeze(0).permute(0,3,1,2) # [1,n_edges,n_nodes, n_nodes]
         Ws = []
-        for i in range(self.num_layers):
+        for i in range(self.num_layers):  # k*GTLayer
             if i == 0:
-                H, W = self.layers[i](A)
+                H, W = self.layers[i](A)  # H即为 A(1)
             else:
                 H = self.normalization(H)
                 H, W = self.layers[i](A, H)
@@ -89,8 +89,8 @@ class GTN(nn.Module):
         #H = self.normalization(H)
         #H,W2 = self.layer2(A, H)
         #H = self.normalization(H)
-        #H,W3 = self.layer3(A, H)
-        for i in range(self.num_channels):
+        #H,W3 = self.layer3(A, H)   # 此时H就是A^l,  shape=[n_channel, n_node, n_node]
+        for i in range(self.num_channels):  # 产生的新的meta-path, 用gcn 卷积
             if i==0:
                 X_ = F.relu(self.gcn_conv(X,H[i]))
             else:
@@ -117,13 +117,13 @@ class GTLayer(nn.Module):
     
     def forward(self, A, H_=None):
         if self.first == True:
-            a = self.conv1(A)
-            b = self.conv2(A)
-            H = torch.bmm(a,b)
+            a = self.conv1(A) # Q1(1)
+            b = self.conv2(A) # Q2(1)
+            H = torch.bmm(a,b) # 图卷积结果相乘, 得到A(1)
             W = [(F.softmax(self.conv1.weight, dim=1)).detach(),(F.softmax(self.conv2.weight, dim=1)).detach()]
         else:
-            a = self.conv1(A)
-            H = torch.bmm(H_,a)
+            a = self.conv1(A)  # 得到最后一个conv的结果, 
+            H = torch.bmm(H_,a) #与前2个layer 的output相乘
             W = [(F.softmax(self.conv1.weight, dim=1)).detach()]
         return H,W
 
