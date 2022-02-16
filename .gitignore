@@ -4,3 +4,5 @@ data/IMDB
 .vscode/*
 reproduce copy.ipynb
 main_ori.py
+__pycache__
+.ipynb_checkpoints
