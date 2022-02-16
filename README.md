@@ -6,7 +6,7 @@ open ```reproduce.ipynb```, then execute commands in the notebook one by one
 - CUDA is required
 
 ## Experimental details
-Experiments are carried out on a single NVIDIA-SMI. Hyperparameter settings:
+Experiments are carried out on a single NVIDIA A100 SXM4. Hyperparameter settings:
 - Train epochs: 40
 - Learning-rate: 0.005
 - weight decay: 0.001
